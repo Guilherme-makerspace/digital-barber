@@ -1,0 +1,26 @@
+{
+  "name": "aplicativo_web",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/leonardo-ggomes/barber-digital#readme",
+  "bugs": {
+    "url": "https://github.com/leonardo-ggomes/barber-digital/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leonardo-ggomes/barber-digital.git"
+  },
+  "license": "ISC",
+  "author": "Leonardo Garcia",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "ejs": "^5.0.2",
+    "express": "^5.2.1",
+    "mysql2": "^3.22.3",
+    "sequelize": "^6.37.8"
+  }
+}
