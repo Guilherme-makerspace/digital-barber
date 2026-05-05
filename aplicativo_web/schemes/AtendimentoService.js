@@ -5,7 +5,7 @@ class Atendimento extends Model {}
 
 Atendimento.init(
 {
-    schedule:{
+    hour:{
         type: DataTypes.TIME,
         allowNull: false
     },
@@ -19,10 +19,15 @@ Atendimento.init(
     email:{
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {isEmail: true}
+        validate: {isEmail: true},
+        foreginKey: true,
+        references: {
+            model: 'Users',
+            key: 'email'
+        }
     },
 
-    servico:{
+    service:{
         type: DataTypes.STRING,
         allowNull: false
     },

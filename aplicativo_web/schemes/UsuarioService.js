@@ -21,9 +21,9 @@ Usuario.init(
         allowNull: false
     },
 
-    telephone:{
+    phone_number:{
         type: DataTypes.INTEGER,
-        
+
     },
 
     birthdate:{
