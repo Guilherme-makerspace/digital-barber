@@ -5,7 +5,7 @@ class Atendimento extends Model {}
 
 Atendimento.init(
 {
-    hour:{
+    time:{
         type: DataTypes.TIME,
         allowNull: false
     },
@@ -41,7 +41,8 @@ Atendimento.init(
     sequelize,
     modelName: 'Booking',
     tableName: 'booking'
-    
-})
+}
+
+)
 
 module.exports = Atendimento;
