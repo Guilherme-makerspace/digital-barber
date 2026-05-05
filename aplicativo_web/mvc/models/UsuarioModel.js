@@ -4,7 +4,7 @@ class Usuario
     senha
     nome
     telefone
-    data_de_nascimento
+    dataDeNascimento
 
     constructor(email, senha, nome, telefone, data_de_nascimento)
     {

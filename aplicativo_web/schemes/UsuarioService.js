@@ -23,11 +23,11 @@ Usuario.init(
 
     phone_number:{
         type: DataTypes.INTEGER,
-
+        allowNull: false
     },
 
     birthdate:{
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false
     }
 },

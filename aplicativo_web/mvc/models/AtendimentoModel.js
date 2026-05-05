@@ -1,18 +1,18 @@
 class Atendimento 
 {
 
-    horario
-    data
+    horarioAtendimento
+    dataAtendimento
     email
-    servico
+    tipoServico
     profissional
 
-    constructor(horario, data, email, servico, profissional)
+    constructor(horarioAtendimento, dataAtendimento, email, tipoServico, profissional)
     {
-        this.horario = horario
-        this.data = data
+        this.horarioAtendimento = horarioAtendimento
+        this.dataAtendimento = dataAtendimento
         this.email = email
-        this.servico = servico
+        this.tipoServico = tipoServico
         this.profissional = profissional
     }
 }

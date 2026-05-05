@@ -11,7 +11,7 @@ Atendimento.init(
     },
 
     data:{
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
         validate: {isDate: true}
     },
@@ -28,7 +28,7 @@ Atendimento.init(
     },
 
     service:{
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM('Corte de Cabelo', 'Barba', 'Sobrancelha', 'Outros'),
         allowNull: false
     },
 
