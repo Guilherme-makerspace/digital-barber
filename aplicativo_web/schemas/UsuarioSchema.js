@@ -19,17 +19,8 @@ Usuario.init(
     password:{
         type: DataTypes.STRING,
         allowNull: false
-    },
-
-    phone_number:{
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-
-    birthdate:{
-        type: DataTypes.DATEONLY,
-        allowNull: false
     }
+
 },
     
 {
