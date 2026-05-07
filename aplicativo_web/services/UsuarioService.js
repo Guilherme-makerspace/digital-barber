@@ -16,6 +16,21 @@ class UsuarioService
         });
     }
 
+    async cadastrarUsuario(username, email, senha)
+    {
+        const usuario = new Usuario(email, senha, username)
+
+        const id = await this.#usuarioSchema.create(
+            {
+                username: usuario.nome,
+                email: usuario.email,
+                password: usuario.password
+            }
+        )
+
+        return id
+    }
+
 }
 
 module.exports = UsuarioService;

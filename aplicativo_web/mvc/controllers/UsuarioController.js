@@ -6,7 +6,6 @@ class UsuarioController
     constructor()
     {
         this.usuarioService = new UsuarioService()
-        this.index = this.index.bind(this);
     }
 
     async index(req, res){
@@ -14,6 +13,22 @@ class UsuarioController
         res.render("Usuario/UsuarioView", {usuarios})
     }
     
+    usuariEditView(req, res)
+    {
+        res.render("Usuario/EditView")
+    }
+
+    async usuarioPostAsync(req, res)
+    {
+        const id = await this.usuarioService.cadastrarUsuario(
+            req.body.username,
+            req.body.email,
+            req.body.senha
+        )
+
+        res.json({ id: id})
+    }
+
 }
 
 module.exports = new UsuarioController()

@@ -10,7 +10,7 @@ async function run() {
         await sequelize.authenticate();
         console.log('Conexão com o banco realizada com sucesso')
 
-        await sequelize.sync({ alter: true });
+        await sequelize.sync({ force: true });
         console.log('Modelos sincronizados')
 
         server.port = port;
