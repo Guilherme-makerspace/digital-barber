@@ -37,8 +37,9 @@ class Usuario
 
     //
 
-    #validarEmail()
+    #validarEmail(email)
     {
+        console.log("Validating email:", email)
         const pattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
 
         if(!pattern.test(email))

@@ -11,10 +11,26 @@ class UsuarioService
     }
 
     async buscarUsuario(id) {
-        return await this.#usuarioSchema.findAll({
+        return await this.#usuarioSchema.findOne({
             where: {id: id}
         });
     }
+
+    async deletarUsuario(id) {
+        const usuario = await this.#usuarioSchema.findOne({
+            where: {id: id}
+        });
+
+        const affectedRows = await usuario.destroy()
+
+        return affectedRows;
+    }
+
+    async BuscarTodosUsuarios() {
+        return await this.#usuarioSchema.findAll()
+    }
+
+    
 
     async cadastrarUsuario(username, email, senha)
     {
@@ -24,12 +40,48 @@ class UsuarioService
             {
                 username: usuario.nome,
                 email: usuario.email,
-                password: usuario.password
+                password: usuario.senha
             }
         )
 
         return id
     }
+
+    async atualizarUsuario(id, username, email, senha)
+    {
+        let rows = 0
+
+        console.log("Email passed to Usuario constructor:", email); // Debugging log
+
+        const usuario = await this.buscarUsuario(id)
+
+        if(usuario)
+        {
+            const model = new Usuario(
+                username || usuario.username,
+                email ||usuario.email,
+                senha || usuario.password
+            )
+            
+            const affectedRows = await this.#usuarioSchema.update(
+                {
+                    username: model.nome,
+                    email: model.email,
+                    password: model.senha
+                },
+                {
+                    where: {
+                        id: id
+                    }
+                }
+                
+            )
+            rows = affectedRows
+        }
+
+        return rows;
+    }
+
 
 }
 

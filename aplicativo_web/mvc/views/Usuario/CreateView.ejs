@@ -7,22 +7,19 @@
 </head>
 <body>
     <form>
-        <h1>Edição do Usuario</h1>
+        <h1>Cadastro Usuario</h1>
         <div>
-            <div>
-                <input value="<%= usuario.id %>" type="text" id="usuarioId" hidden>
-            </div>
             <div>
                 <label for="username">Username</label>
             </div>
             <div>
-                <input value="<%= usuario.username %>" type="username" id="username">
+                <input type="username" id="username">
             </div>
             <div>
                 <label for="email">Email</label>
             </div>
             <div>
-                <input value="<%= usuario.email %>" type="email" id="email">
+                <input type="email" id="email">
             </div>
             <div>
                 <label for="senha">senha</label>
@@ -31,7 +28,7 @@
                 <input type="password" id="senha">
             </div>
             <div>
-                <button id="btnAtualizarUsuario" type="submit">Atualizar</button>
+                <button id="btnCadastrarUsuario" type="submit">Cadastrar</button>
             </div>
         </div>
     </form>
@@ -41,31 +38,27 @@
 
 <script>
 
-    const btnAtualizarUsuario = document.getElementById("btnAtualizarUsuario")
+    const btnCadastrarUsuario = document.getElementById("btnCadastrarUsuario")
     
-    btnAtualizarUsuario.addEventListener("click", atualizarUsuario)
+    btnCadastrarUsuario.addEventListener("click", cadastrarUsuario)
 
-    async function atualizarUsuario(e)
+    async function cadastrarUsuario(e)
     {
         e.preventDefault()
 
-        const id = document.getElementById("usuarioId")
         const username = document.getElementById("username")
         const email = document.getElementById("email")
         const senha = document.getElementById("senha")
-
-        console.log("Email being sent:", email.value); 
         
-        const url = "/user/edit"
+        const url = "/user/create"
         
         const response = await fetch(url, {
-            method:'PUT',
+            method:'POST',
             headers:{
                 'Content-Type':'application/json'
             },
             body: JSON.stringify(
                 {
-                    id: id.value,
                     username: username.value,
                     email: email.value,
                     senha: senha.value
