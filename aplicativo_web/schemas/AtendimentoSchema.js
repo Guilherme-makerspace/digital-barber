@@ -8,7 +8,7 @@ Atendimento.init({
         type: DataTypes.STRING,
         allowNull: false,
     },
-    telefone:{
+    telfone:{
         type: DataTypes.STRING,
         allowNull: false,
     } ,

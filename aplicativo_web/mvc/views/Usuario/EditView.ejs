@@ -6,46 +6,50 @@
     <title>Edit</title>
 </head>
 <body>
+    
     <form>
-        <h1>Edição do Usuario</h1>
+        <h1>Edição de Usuário</h1>
+
+        <input value="<%= usuario.id %>" type="text" id="usuarioId" hidden>
+
         <div>
-            <div>
-                <input value="<%= usuario.id %>" type="text" id="usuarioId" hidden>
-            </div>
             <div>
                 <label for="username">Username</label>
             </div>
             <div>
-                <input value="<%= usuario.username %>" type="username" id="username">
+                <input value="<%= usuario.username %>" type="text" id="username">
             </div>
+        </div>
+        <div>
             <div>
-                <label for="email">Email</label>
+                <label for="email">E-mail</label>
             </div>
             <div>
                 <input value="<%= usuario.email %>" type="email" id="email">
             </div>
+        </div>
+        <div>
             <div>
-                <label for="senha">senha</label>
+                <label for="senha">Senha</label>
             </div>
             <div>
                 <input type="password" id="senha">
             </div>
-            <div>
-                <button id="btnAtualizarUsuario" type="submit">Atualizar</button>
-            </div>
         </div>
-    </form>
-    
-    
-</body>
+        <div>
+            <button id="btnCadastrarUsuario" type="submit">Cadastrar</button>
+        </div>
 
+    </form>
+
+</body>
 <script>
 
-    const btnAtualizarUsuario = document.getElementById("btnAtualizarUsuario")
-    
-    btnAtualizarUsuario.addEventListener("click", atualizarUsuario)
+    const btnCadastrarUsuario = document.getElementById("btnCadastrarUsuario")
+  
+    btnCadastrarUsuario.addEventListener("click", cadastrarUsuario)
 
-    async function atualizarUsuario(e)
+    async function cadastrarUsuario(e)
     {
         e.preventDefault()
 
@@ -53,12 +57,11 @@
         const username = document.getElementById("username")
         const email = document.getElementById("email")
         const senha = document.getElementById("senha")
+  
 
-        console.log("Email being sent:", email.value); 
-        
         const url = "/user/edit"
-        
-        const response = await fetch(url, {
+
+       const response = await fetch(url, { 
             method:'PUT',
             headers:{
                 'Content-Type':'application/json'
@@ -66,7 +69,7 @@
             body: JSON.stringify(
                 {
                     id: id.value,
-                    username: username.value,
+                    username : username.value,
                     email: email.value,
                     senha: senha.value
                 }
@@ -77,12 +80,12 @@
 
         if(!response.ok)
         {
-            console.log("Ocorreu um erro na requisição")
+            console.log("Ocorreu um erro na requisção")
         }
 
+        console.log(data)
 
     }
 
 </script>
-
 </html>

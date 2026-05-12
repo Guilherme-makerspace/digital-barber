@@ -1,20 +1,20 @@
-class Atendimento 
+class Atendimento
 {
-
-    nomeCliente
-    dataHora
+    nomeCLiente
     telefone
+    horarioAtendimento
+    dataAtendimento
+    dataNascimento
     tipoServico
     profissional
-
-    constructor(nomeCliente, dataHora, telefone, tipoServico, profissional)
+    constructor(nomeCLiente, telefone, horarioAtendimento, dataNascimento, tipoServico, profissional)
     {
-        this.nomeCliente = nomeCliente
-        this.dataHora = dataHora
+        this.nomeCLiente = nomeCLiente
         this.telefone = telefone
+        this.horarioAtendimento = horarioAtendimento
+        this.dataNascimento = dataNascimento
         this.tipoServico = tipoServico
         this.profissional = profissional
     }
 }
-
 module.exports = Atendimento

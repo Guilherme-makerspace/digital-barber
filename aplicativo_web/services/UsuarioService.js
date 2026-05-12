@@ -1,24 +1,27 @@
-const Usuario = require("../mvc/models/UsuarioModel")
-const UsuarioSchema = require("../schemas/UsuarioSchema")
+const Usuario = require("../mvc/models/UsuarioModel");
+const UsuarioSchema = require("../schemas/UsuarioSchema");
 
 class UsuarioService 
-
 {
-    #usuarioSchema
 
-    constructor() {
+    #usuarioSchema
+    
+    constructor() 
+    {     
         this.#usuarioSchema = UsuarioSchema;
     }
 
-    async buscarUsuario(id) {
+    async buscarUsuario(id) 
+    {   
         return await this.#usuarioSchema.findOne({
-            where: {id: id}
+            where: { id: id }
         });
     }
 
-    async deletarUsuario(id) {
+    async deletarUsuario(id) 
+    {   
         const usuario = await this.#usuarioSchema.findOne({
-            where: {id: id}
+            where: { id: id }
         });
 
         const affectedRows = await usuario.destroy()
@@ -26,16 +29,15 @@ class UsuarioService
         return affectedRows;
     }
 
-    async BuscarTodosUsuarios() {
-        return await this.#usuarioSchema.findAll()
+    async buscarTodosUsuarios() 
+    {   
+        return await this.#usuarioSchema.findAll();
     }
-
-    
 
     async cadastrarUsuario(username, email, senha)
     {
         const usuario = new Usuario(email, senha, username)
-
+        
         const id = await this.#usuarioSchema.create(
             {
                 username: usuario.nome,
@@ -44,26 +46,27 @@ class UsuarioService
             }
         )
 
-        return id
+        return id;
+
     }
 
     async atualizarUsuario(id, username, email, senha)
     {
-        let rows = 0
-
-        console.log("Email passed to Usuario constructor:", email); // Debugging log
+       
+        let rows = 0;
 
         const usuario = await this.buscarUsuario(id)
 
         if(usuario)
         {
+           
             const model = new Usuario(
-                username || usuario.username,
-                email ||usuario.email,
-                senha || usuario.password
+                email || usuario.email , 
+                senha || usuario.password,
+                username || usuario.username         
             )
-            
-            const affectedRows = await this.#usuarioSchema.update(
+
+             const affectedRows = await this.#usuarioSchema.update(
                 {
                     username: model.nome,
                     email: model.email,
@@ -74,15 +77,15 @@ class UsuarioService
                         id: id
                     }
                 }
-                
             )
+
             rows = affectedRows
-        }
+        }       
 
         return rows;
     }
 
 
 }
-
+// Corrigido de modules para module
 module.exports = UsuarioService;

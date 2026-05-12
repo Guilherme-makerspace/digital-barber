@@ -5,15 +5,13 @@ class Usuario
     #nome
 
     constructor(email, senha, nome)
-    {   
+    {
         this.#validarEmail(email)
-        
+
         this.#email = email
         this.#senha = senha
         this.#nome = nome
     }
-
-    //
 
     get email()
     {
@@ -35,11 +33,10 @@ class Usuario
         this.#email = valor
     }
 
-    //
 
     #validarEmail(email)
     {
-        const pattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+        const pattern =  /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
 
         if(!pattern.test(email))
         {
@@ -47,6 +44,7 @@ class Usuario
         }
 
     }
+
 }
 
-const usuario = new Usuario("carlosgome@com.br", "joãoClebler67", "Matheus Garcia")
+const usuario = new Usuario("a@b.com", "123","Zé")
