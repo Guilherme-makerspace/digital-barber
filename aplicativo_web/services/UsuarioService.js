@@ -13,9 +13,20 @@ class UsuarioService
 
     async buscarUsuario(id) 
     {   
-        return await this.#usuarioSchema.findOne({
+        const dado = await this.#usuarioSchema.findOne({
             where: { id: id }
         });
+
+        if(!dado){
+            return null
+        }
+
+        new Usuario(
+            dado.email,
+            dado.password,
+            dado.username
+        )
+
     }
 
     async deletarUsuario(id) 
@@ -87,5 +98,5 @@ class UsuarioService
 
 
 }
-// Corrigido de modules para module
+
 module.exports = UsuarioService;
