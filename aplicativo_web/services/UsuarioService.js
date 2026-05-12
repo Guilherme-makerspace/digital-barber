@@ -13,7 +13,7 @@ class UsuarioService
 
     async buscarUsuario(id) 
     {   
-        const dado = await this.#usuarioSchema.findOne({
+       const dado = await this.#usuarioSchema.findOne({
             where: { id: id }
         });
 
@@ -21,15 +21,15 @@ class UsuarioService
             return null
         }
 
-        const usuario = new Usuario(
-            dado.email,
-            dado.password,
-            dado.username
-        )
+       const usuario = new Usuario(
+        dado.email,
+        dado.password,
+        dado.username
+       )
 
-        usuario.id = dado.id
+       usuario.id = dado.id
 
-        return usuario;
+       return usuario
 
     }
 
@@ -51,25 +51,27 @@ class UsuarioService
 
         for(const usuario of dados)
         {
-            const u = new Usuario(
-                usuario.email,
-                usuario.password,
-                usuario.username
-            )
 
+            const u = new Usuario(
+                    usuario.email,
+                    usuario.password,
+                    usuario.username
+                )
+            
             u.id = usuario.id
 
             usuarios.push(u)
         }
 
         return usuarios
+
     }
 
     async cadastrarUsuario(username, email, senha)
     {
         const usuario = new Usuario(email, senha, username)
         
-        const id = await this.#usuarioSchema.create(
+        const u = await this.#usuarioSchema.create(
             {
                 username: usuario.nome,
                 email: usuario.email,
@@ -77,7 +79,7 @@ class UsuarioService
             }
         )
 
-        return id;
+        return u;
 
     }
 
@@ -118,5 +120,5 @@ class UsuarioService
 
 
 }
-
+// Corrigido de modules para module
 module.exports = UsuarioService;

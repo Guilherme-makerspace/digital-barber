@@ -8,16 +8,16 @@ async function run() {
     try {
      
         await sequelize.authenticate();
-        console.log('Conexão com o banco realizada com sucesso.');
+        console.log('✅ Conexão com o banco realizada com sucesso.');
        
         await sequelize.sync({ alter: true });
-        console.log('Modelos sincronizados.');
+        console.log('✅ Modelos sincronizados.');
    
         server.port = port;
         server.listen();
 
     } catch (error) {
-        console.error('Erro ao iniciar a aplicação:', error);
+        console.error('❌ Erro ao iniciar a aplicação:', error);
     }
 }
 

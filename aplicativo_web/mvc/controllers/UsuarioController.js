@@ -9,8 +9,7 @@ class UsuarioController
 
     async index(req, res)
     {
-        const usuarios = await this.usuarioService.buscarUsuario(req.params.id)
-        res.render("Usuario/UsuarioView", { usuarios})
+        res.render("Usuario/UsuarioView")
     }
 
     async usuarioListView(req, res)
@@ -32,13 +31,13 @@ class UsuarioController
 
     async usuarioPostAsync(req,res)
     {
-        const id = await this.usuarioService.cadastrarUsuario(
+        const usuario = await this.usuarioService.cadastrarUsuario(
             req.body.username,
             req.body.email, 
             req.body.senha
         )
 
-       res.json({ id: id })
+       res.json({ usuario: usuario })
     }
 
     async usuarioPutAsync(req,res)

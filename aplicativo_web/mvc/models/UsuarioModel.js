@@ -41,10 +41,6 @@ class Usuario
 
     set id(valor)
     {
-        if(valor < 0 || isNaN(valor) || typeof valor !== "number") 
-        {
-            throw new Error("ID não pode ser negativo")
-        }
         this.#id = valor
     }
 
