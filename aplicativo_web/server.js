@@ -16,7 +16,6 @@ class Server
         this.app.use(express.urlencoded({extended: true}))
         this.app.set("view engine", "ejs")
         this.app.set("views","mvc/views")
-        this.app.use(express.static("mvc/views/static"))
         this.app.use(router)
 
     }

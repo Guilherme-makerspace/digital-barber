@@ -225,19 +225,39 @@
         </div>
     </div>
 
+    
     <nav class="lg-sidebar">
-        <a href="/user/" class="lg-nav-item"><i data-lucide="layout-grid"></i></a>
-        <a href="/user/create" class="lg-nav-item active"><i data-lucide="user-plus"></i></a>
-        <a href="/user/list" class="lg-nav-item"><i data-lucide="calendar-search"></i></a>
+        <a href="/atendimento/" class="lg-nav-item" title="Dashboard Atendimento">
+            <i data-lucide="layout-grid"></i>
+        </a>
+        <a href="/atendimento/create" class="lg-nav-item" title="Novo Atendimento">
+            <i data-lucide="calendar-plus"></i>
+        </a>
+        <a href="/atendimento/list" class="lg-nav-item" title="Lista de Atendimentos">
+            <i data-lucide="calendar-search"></i>
+        </a>
+
+        <div style="height: 1px; width: 30px; background: rgba(255,255,255,0.05); margin: 10px 0;"></div>
+
+        <a href="/user/create" class="lg-nav-item" title="Novo Usuário">
+            <i data-lucide="user-plus"></i>
+        </a>
+        <a href="/user/list" class="lg-nav-item" title="Lista de Usuários">
+            <i data-lucide="users"></i>
+        </a>
+
         <div style="flex-grow: 1;"></div>
-        <a href="/logout" class="lg-nav-item"><i data-lucide="log-out"></i></a>
+
+        <a href="/logout" class="lg-nav-item" title="Sair">
+            <i data-lucide="log-out"></i>
+        </a>
     </nav>
 
     <main class="lg-main-container">
         <div class="lg-breadcrumb">
-            <span>Dashboard</span>
+            <span>Plataforma</span>
             <span>Usuários</span>
-            <b>Novo Cadastro</b>
+            <b>Novo Registro</b>
         </div>
 
         <header>

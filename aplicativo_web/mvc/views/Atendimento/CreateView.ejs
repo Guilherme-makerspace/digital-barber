@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SGP - Editar Usuário</title>
+    <title>SGP - Criar Atendimento</title>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
@@ -83,7 +83,7 @@
 
         /* --- Typography --- */
         .lg-display-1 { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
-        .lg-display-2 { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+        .lg-display-2 { font-size: 14px; color: var(--text-muted); max-width: 600px; line-height: 1.6; }
 
         /* --- Form Modular --- */
         .lg-form-group {
@@ -120,15 +120,17 @@
             box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
         }
 
-        /* --- Actions / Footer --- */
-        .lg-form-footer {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 24px;
-            gap: 12px;
+        .lg-input:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            border-style: dashed;
         }
 
+        /* --- Buttons --- */
         .lg-btn {
+            background-color: var(--bg-input);
+            color: var(--text-main);
+            border: 1px solid var(--primary);
             padding: 0 24px;
             height: 38px;
             border-radius: var(--border-radius);
@@ -140,10 +142,6 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            text-decoration: none;
-            border: 1px solid var(--primary);
-            background-color: var(--bg-input);
-            color: var(--text-main);
         }
 
         .lg-btn-primary {
@@ -156,7 +154,9 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
 
-        /* --- Modal Design (Feedback) --- */
+        .lg-form-actions { display: flex; justify-content: flex-end; margin-top: 20px; }
+
+        /* --- Modal Design --- */
         .lg-modal-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -194,15 +194,23 @@
             margin: 0 auto 20px;
         }
 
-        /* Estilização Dinâmica por Classe */
         .lg-modal.success .lg-modal-icon { background: rgba(27, 94, 32, 0.1); color: #4ade80; }
         .lg-modal.error .lg-modal-icon { background: rgba(150, 32, 32, 0.1); color: var(--danger); }
 
         .lg-modal-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
         .lg-modal-text { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; line-height: 1.5; }
 
+        /* --- Utilities --- */
         .lg-row { display: flex; gap: 20px; }
         .lg-col-6 { flex: 1; }
+        .lg-col-4 { width: 33.33%; }
+        .lg-col-3 { width: 25%; }
+        #areaId { display: none; }
+
+        /* Ajuste para inputs de data/hora no dark mode */
+        input::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+        }
     </style>
 </head>
 
@@ -212,16 +220,16 @@
             <div class="lg-modal-icon">
                 <i id="modalIcon" data-lucide="check-circle" style="width: 32px; height: 32px;"></i>
             </div>
-            <h2 class="lg-modal-title" id="modalTitle">Título</h2>
-            <p class="lg-modal-text" id="modalMessage">Mensagem do alerta.</p>
+            <h2 class="lg-modal-title" id="modalTitle">Sucesso!</h2>
+            <p class="lg-modal-text" id="modalMessage">Atendimento registrado com sucesso.</p>
             
             <div class="lg-modal-actions">
-                <button class="lg-btn lg-btn-primary" id="btnFecharModal">Entendido</button>
+                <button class="lg-btn lg-btn-primary" onclick="fecharModal()">OK</button>
             </div>
         </div>
     </div>
 
-   
+    
     <nav class="lg-sidebar">
         <a href="/atendimento/" class="lg-nav-item" title="Dashboard Atendimento">
             <i data-lucide="layout-grid"></i>
@@ -252,45 +260,69 @@
     <main class="lg-main-container">
         <div class="lg-breadcrumb">
             <span>Plataforma</span>
-            <span>Usuários</span>
-            <b>Editar Perfil</b>
+            <span>Atendimentos</span>
+            <b>Novo Registro</b>
         </div>
 
         <header>
-            <h1 class="lg-display-1">Edição de Usuário</h1>
+            <h1 class="lg-display-1">Novo Atendimento</h1>
             <p class="lg-display-2">
-                Atualize as informações de <b><%= usuario.username %></b>. 
-                Deixe a senha em branco para manter a atual.
+                Insira as informações do cliente e os detalhes do agendamento para realizar o cadastro.
             </p>
         </header>
 
-        <form class="lg-form" id="formEdicao">
-            <input value="<%= usuario.id %>" type="hidden" id="usuarioId">
-
-            <div class="lg-row">
-                <div class="lg-col-6 lg-form-group">
-                    <label class="lg-label" for="username">Username</label>
-                    <input class="lg-input" value="<%= usuario.nome %>" type="text" id="username" required>
-                </div>
-                <div class="lg-col-6 lg-form-group">
-                    <label class="lg-label" for="email">E-mail</label>
-                    <input class="lg-input" value="<%= usuario.email %>" type="email" id="email" required>
+        <form class="lg-form" id="formAtendimento">
+            <div class="lg-row" id="areaId">
+                <div class="lg-col-3 lg-form-group">
+                    <label class="lg-label">Protocolo</label>
+                    <input class="lg-input" type="text" id="atendimentoIdDisplay" disabled>
                 </div>
             </div>
 
             <div class="lg-row">
                 <div class="lg-col-6 lg-form-group">
-                    <label class="lg-label" for="senha">Nova Senha (opcional)</label>
-                    <input class="lg-input" type="password" id="senha" placeholder="••••••••">
+                    <label class="lg-label" for="nomeCliente">Nome do Cliente</label>
+                    <input class="lg-input" type="text" id="nomeCliente" placeholder="Ex: Maria Oliveira" required>
                 </div>
-                <div class="lg-col-6"></div>
+                <div class="lg-col-6 lg-form-group">
+                    <label class="lg-label" for="telefone">Telefone / WhatsApp</label>
+                    <input class="lg-input" type="tel" id="telefone" placeholder="(11) 99999-9999" required>
+                </div>
             </div>
 
-            <div class="lg-form-footer">
-                <a href="/user/list" class="lg-btn">Cancelar</a>
-                <button class="lg-btn lg-btn-primary" type="submit" id="btnSalvar">
-                    Salvar Alterações
-                </button>
+            <div class="lg-row">
+                <div class="lg-col-4 lg-form-group">
+                    <label class="lg-label" for="dataAtendimento">Data do Atendimento</label>
+                    <input class="lg-input" type="date" id="dataAtendimento" required>
+                </div>
+                <div class="lg-col-4 lg-form-group">
+                    <label class="lg-label" for="horarioAtendimento">Horário</label>
+                    <input class="lg-input" type="time" id="horarioAtendimento" required>
+                </div>
+                <div class="lg-col-4 lg-form-group">
+                    <label class="lg-label" for="dataNascimento">Data de Nascimento (Cliente)</label>
+                    <input class="lg-input" type="date" id="dataNascimento" required>
+                </div>
+            </div>
+
+            <div class="lg-row">
+                <div class="lg-col-6 lg-form-group">
+                    <label class="lg-label" for="tipoServico">Tipo de Serviço</label>
+                    <input class="lg-input" type="text" id="tipoServico" placeholder="Ex: Consultoria Técnica" required>
+                </div>
+                <div class="lg-col-6 lg-form-group">
+                    <label class="lg-label" for="profissional">Profissional Responsável</label>
+
+                    <select class="lg-input" name="profissional" id="profissional">
+                        <% for(const usuario of usuarios){  %>
+                            <option value="<%= usuario.id %> "><%= usuario.nome %></option>
+                        <% } %>
+                    </select>
+                </div>
+            </div>
+
+            <div class="lg-form-actions">
+                <button class="lg-btn lg-btn-primary" type="submit" id="btnSubmit">Cadastrar Atendimento</button>
             </div>
         </form>
     </main>
@@ -298,65 +330,74 @@
     <script>
         lucide.createIcons();
 
-        const form = document.getElementById("formEdicao");
-        const modalOverlay = document.getElementById("modalFeedback");
+        const form = document.getElementById("formAtendimento");
+        const modal = document.getElementById("modalFeedback");
         const modalContent = document.getElementById("modalContent");
-        const btnFechar = document.getElementById("btnFecharModal");
 
-        let redirectUrl = null;
-
-        function abrirModal(tipo, titulo, mensagem, redirect = null) {
+        function abrirModal(tipo, titulo, mensagem) {
+            const iconElement = document.getElementById("modalIcon");
             modalContent.className = `lg-modal ${tipo}`;
             document.getElementById("modalTitle").innerText = titulo;
             document.getElementById("modalMessage").innerText = mensagem;
             
-            const iconElement = document.getElementById("modalIcon");
-            iconElement.setAttribute('data-lucide', tipo === 'success' ? 'check-circle' : 'alert-circle');
-            
-            redirectUrl = redirect;
+            const iconName = tipo === 'success' ? 'check-circle' : 'alert-circle';
+            iconElement.setAttribute('data-lucide', iconName);
             lucide.createIcons();
-            modalOverlay.classList.add('active');
+
+            modal.classList.add('active');
         }
 
-        btnFechar.addEventListener("click", () => {
-            modalOverlay.classList.remove('active');
-            if (redirectUrl) window.location.href = redirectUrl;
-        });
+        function fecharModal() {
+            modal.classList.remove('active');
+        }
 
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
-            const btnSalvar = document.getElementById("btnSalvar");
             
-            btnSalvar.disabled = true;
-            btnSalvar.innerText = "Salvando...";
+            const btn = document.getElementById("btnSubmit");
+            btn.innerText = "Agendando...";
+            btn.disabled = true;
 
             const payload = {
-                id: document.getElementById("usuarioId").value,
-                username: document.getElementById("username").value,
-                email: document.getElementById("email").value,
-                senha: document.getElementById("senha").value
+                nomeCliente: document.getElementById("nomeCliente").value,
+                telefone: document.getElementById("telefone").value,
+                horarioAtendimento: document.getElementById("horarioAtendimento").value,
+                dataAtendimento: document.getElementById("dataAtendimento").value,
+                dataNascimento: document.getElementById("dataNascimento").value,
+                tipoServico: document.getElementById("tipoServico").value,
+                profissional: document.getElementById("profissional").value
             };
 
             try {
-                const response = await fetch("/user/edit", {
-                    method: 'PUT',
+                const response = await fetch("/atendimento/create", {
+                    method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
+                const data = await response.json();
+
                 if (response.ok) {
-                    abrirModal('success', 'Atualizado!', 'As informações do usuário foram salvas com sucesso.', '/user/list');
+                    abrirModal('success', 'Sucesso!', 'O atendimento foi agendado corretamente.');
+                    
+                    // Exibe o ID retornado (ajustado para a estrutura do seu backend)
+                    if(data.atendimento && data.atendimento.id) {
+                        document.getElementById("areaId").style.display = "flex";
+                        document.getElementById("atendimentoIdDisplay").value = `#${data.atendimento.id}`;
+                    }
+                    form.reset(); // Limpa o formulário após sucesso
                 } else {
-                    abrirModal('error', 'Erro ao Salvar', 'Não foi possível atualizar os dados. Tente novamente mais tarde.');
-                    btnSalvar.disabled = false;
-                    btnSalvar.innerText = "Salvar Alterações";
+                    abrirModal('error', 'Erro', data.message || 'Não foi possível salvar o atendimento.');
                 }
             } catch (err) {
-                abrirModal('error', 'Falha na Rede', 'Verifique sua conexão com a internet.');
-                btnSalvar.disabled = false;
-                btnSalvar.innerText = "Salvar Alterações";
+                abrirModal('error', 'Erro de Conexão', 'Falha ao conectar com o servidor.');
+            } finally {
+                btn.innerText = "Cadastrar Atendimento";
+                btn.disabled = false;
             }
         });
+
+        window.onclick = (e) => { if (e.target == modal) fecharModal(); }
     </script>
 </body>
 </html>
