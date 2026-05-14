@@ -171,6 +171,8 @@
             transition: opacity 0.3s ease;
         }
 
+        .lg-modal-actions { display: flex; justify-content: flex-end; gap: 12px; }
+
         .lg-modal-overlay.active { display: flex; opacity: 1; }
 
         .lg-modal {
@@ -218,17 +220,17 @@
             </div>
             <h2 class="lg-modal-title" id="modalTitle">Sucesso!</h2>
             <p class="lg-modal-text" id="modalMessage">Usuário cadastrado corretamente.</p>
-            
+
             <div class="lg-modal-actions">
-                <button class="lg-btn lg-btn-primary" onclick="fecharModal()">OK</button>
+                <button class="lg-btn lg-btn-primary" type="button" onclick="fecharModal()">OK</button>
             </div>
         </div>
     </div>
 
     <nav class="lg-sidebar">
-        <a href="/user/" class="lg-nav-item"><i data-lucide="layout-grid"></i></a>
         <a href="/user/create" class="lg-nav-item active"><i data-lucide="user-plus"></i></a>
-        <a href="/user/list" class="lg-nav-item"><i data-lucide="calendar-search"></i></a>
+        <a href="/atendimento/list" class="lg-nav-item"><i data-lucide="calendar-search"></i></a>
+        <a href="/professionals/" class="lg-nav-item"><i data-lucide="user"></i></a>
         <div style="flex-grow: 1;"></div>
         <a href="/logout" class="lg-nav-item"><i data-lucide="log-out"></i></a>
     </nav>

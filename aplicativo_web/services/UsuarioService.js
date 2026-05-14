@@ -1,124 +1,73 @@
 const Usuario = require("../mvc/models/UsuarioModel");
 const UsuarioSchema = require("../schemas/UsuarioSchema");
 
-class UsuarioService 
-{
+class UsuarioService {
+  #usuarioSchema;
 
-    #usuarioSchema
-    
-    constructor() 
-    {     
-        this.#usuarioSchema = UsuarioSchema;
-    }
+  constructor() {
+    this.#usuarioSchema = UsuarioSchema;
+  }
 
-    async buscarUsuario(id) 
-    {   
-       const dado = await this.#usuarioSchema.findOne({
-            where: { id: id }
-        });
+  async buscarUsuario(id) {
+    const dado = await this.#usuarioSchema.findOne({ where: { id } });
+    if (!dado) return null;
 
-        if(!dado){
-            return null
-        }
+    // UsuarioModel: constructor(email, senha, nome)
+    const usuario = new Usuario(dado.email, dado.password, dado.username);
+    usuario.id = dado.id;
 
-       const usuario = new Usuario(
-        dado.email,
-        dado.password,
-        dado.username
-       )
+    return usuario;
+  }
 
-       usuario.id = dado.id
+  async buscarTodosUsuarios() {
+    const dados = await this.#usuarioSchema.findAll();
 
-       return usuario
+    return dados.map((dado) => {
+      const usuario = new Usuario(dado.email, dado.password, dado.username);
+      usuario.id = dado.id;
+      return usuario;
+    });
+  }
 
-    }
+  async cadastrarUsuario(username, email, senha) {
+    // UsuarioModel: constructor(email, senha, nome)
+    const usuario = new Usuario(email, senha, username);
 
-    async deletarUsuario(id) 
-    {   
-        const usuario = await this.#usuarioSchema.findOne({
-            where: { id: id }
-        });
+    const created = await this.#usuarioSchema.create({
+      username: usuario.nome,
+      email: usuario.email,
+      password: usuario.senha,
+      // userType vai para defaultValue: 'user'
+    });
 
-        const affectedRows = await usuario.destroy()
+    return created;
+  }
 
-        return affectedRows;
-    }
+  async atualizarUsuario(id, username, email, senha) {
+    const existente = await this.buscarUsuario(id);
+    if (!existente) return 0;
 
-    async buscarTodosUsuarios() 
-    {   
-        const usuarios = []
-        const dados = await this.#usuarioSchema.findAll();
+    const usernameFinal = username ?? existente.nome;
+    const emailFinal = email ?? existente.email;
+    const senhaFinal = senha ?? existente.senha;
 
-        for(const usuario of dados)
-        {
+    const affectedRows = await this.#usuarioSchema.update(
+      {
+        username: usernameFinal,
+        email: emailFinal,
+        password: senhaFinal,
+      },
+      { where: { id } }
+    );
 
-            const u = new Usuario(
-                    usuario.email,
-                    usuario.password,
-                    usuario.username
-                )
-            
-            u.id = usuario.id
+    return affectedRows;
+  }
 
-            usuarios.push(u)
-        }
-
-        return usuarios
-
-    }
-
-    async cadastrarUsuario(username, email, senha)
-    {
-        const usuario = new Usuario(email, senha, username)
-        
-        const u = await this.#usuarioSchema.create(
-            {
-                username: usuario.nome,
-                email: usuario.email,
-                password: usuario.senha
-            }
-        )
-
-        return u;
-
-    }
-
-    async atualizarUsuario(id, username, email, senha)
-    {
-       
-        let rows = 0;
-
-        const usuario = await this.buscarUsuario(id)
-
-        if(usuario)
-        {
-           
-            const model = new Usuario(
-                email || usuario.email , 
-                senha || usuario.password,
-                username || usuario.username         
-            )
-
-             const affectedRows = await this.#usuarioSchema.update(
-                {
-                    username: model.nome,
-                    email: model.email,
-                    password: model.senha
-                },
-                {
-                    where: {
-                        id: id
-                    }
-                }
-            )
-
-            rows = affectedRows
-        }       
-
-        return rows;
-    }
-
-
+  async deletarUsuario(id) {
+    const usuario = await this.#usuarioSchema.findOne({ where: { id } });
+    if (!usuario) return 0;
+    return await usuario.destroy();
+  }
 }
-// Corrigido de modules para module
+
 module.exports = UsuarioService;

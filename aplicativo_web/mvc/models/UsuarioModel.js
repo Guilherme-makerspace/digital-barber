@@ -7,12 +7,14 @@ class Usuario
 
     constructor(email, senha, nome)
     {
+
         this.#validarEmail(email)
 
         this.#email = email
         this.#senha = senha
         this.#nome = nome
     }
+
 
     get id()
     {
@@ -55,6 +57,8 @@ class Usuario
         }
 
     }
+
+
 
 }
 

@@ -8,7 +8,7 @@ Atendimento.init({
         type: DataTypes.STRING,
         allowNull: false,
     },
-    telfone:{
+    telefone:{
         type: DataTypes.STRING,
         allowNull: false,
     } ,
@@ -21,8 +21,8 @@ Atendimento.init({
         allowNull:false,
     },
     dataNascimento: {
-        type: DataTypes.DATEONLY,
-        allowNull:false,
+        type: DataTypes.DATEONLY
+        
     },
     tipoServico: {
         type: DataTypes.ENUM('Corte de cabelo', 'Barba', 'Sobrancelha', 'Outros'),

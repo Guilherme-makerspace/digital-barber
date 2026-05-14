@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGP - Profissionais</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
+
+        :root {
+            --bg-body: #262626;
+            --bg-sidebar: #1f1f1f;
+            --primary: #686868;
+            --accent: #004ba8;
+            --text-main: #ffffff;
+            --text-muted: #a1a0a0;
+            --sidebar-width: 60px;
+            --font: "Nunito", sans-serif;
+            --border-radius: 6px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: var(--font);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .lg-sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--bg-sidebar);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            flex-shrink: 0;
+        }
+
+        .lg-nav-item {
+            color: var(--text-muted);
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .lg-nav-item:hover, .lg-nav-item.active {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+        }
+
+        .lg-nav-item svg { width: 20px; height: 20px; }
+
+        .lg-main-container {
+            flex-grow: 1;
+            padding: 40px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .lg-breadcrumb {
+            display: flex;
+            gap: 8px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            align-items: center;
+        }
+
+        .lg-breadcrumb span::after { content: '/'; margin-left: 8px; }
+        .lg-breadcrumb b { color: var(--text-main); }
+
+        .lg-display-1 { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+        .lg-display-2 { font-size: 14px; color: var(--text-muted); max-width: 600px; line-height: 1.6; }
+
+        .lg-btn-add {
+            text-decoration: none;
+            background: var(--accent);
+            color: white;
+            padding: 10px 18px;
+            border-radius: var(--border-radius);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+
+        .lg-card {
+            background-color: var(--bg-sidebar);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: var(--border-radius);
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="lg-sidebar">
+        <a href="/user/" class="lg-nav-item"><i data-lucide="layout-grid"></i></a>
+        <a href="/atendimento/list" class="lg-nav-item active"><i data-lucide="calendar-search"></i></a>
+        <a href="/professionals/" class="lg-nav-item"><i data-lucide="user"></i></a>
+        <div style="flex-grow: 1;"></div>
+        <a href="/logout" class="lg-nav-item"><i data-lucide="log-out"></i></a>
+    </nav>
+
+    <main class="lg-main-container">
+        <div class="lg-breadcrumb">
+            <span>Dashboard</span>
+            <b>Profissionais</b>
+        </div>
+
+        <section class="lg-card">
+            <h1 class="lg-display-1">Profissionais</h1>
+            <p class="lg-display-2">
+                Gerencie profissionais e visualize a agenda de cada um.
+            </p>
+
+            <div style="margin-top:14px; display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+                <a href="/professionals/" class="lg-btn-add">
+                    <i data-lucide="list"></i> Ver Lista
+                </a>
+                <a href="/professionals/create" class="lg-btn-add">
+                    <i data-lucide="plus"></i> Novo Profissional
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

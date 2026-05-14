@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SGP - Editar Usuário</title>
+    <title>SGP - Criar Profissional</title>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
@@ -83,7 +83,7 @@
 
         /* --- Typography --- */
         .lg-display-1 { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
-        .lg-display-2 { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+        .lg-display-2 { font-size: 14px; color: var(--text-muted); max-width: 600px; line-height: 1.6; }
 
         /* --- Form Modular --- */
         .lg-form-group {
@@ -120,15 +120,17 @@
             box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
         }
 
-        /* --- Actions / Footer --- */
-        .lg-form-footer {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 24px;
-            gap: 12px;
+        .lg-input:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            border-style: dashed;
         }
 
+        /* --- Buttons --- */
         .lg-btn {
+            background-color: var(--bg-input);
+            color: var(--text-main);
+            border: 1px solid var(--primary);
             padding: 0 24px;
             height: 38px;
             border-radius: var(--border-radius);
@@ -140,10 +142,6 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            text-decoration: none;
-            border: 1px solid var(--primary);
-            background-color: var(--bg-input);
-            color: var(--text-main);
         }
 
         .lg-btn-primary {
@@ -156,7 +154,9 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
 
-        /* --- Modal Design (Feedback) --- */
+        .lg-form-actions { display: flex; justify-content: flex-end; margin-top: 20px; }
+
+        /* --- Modal Design --- */
         .lg-modal-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -194,15 +194,19 @@
             margin: 0 auto 20px;
         }
 
-        /* Estilização Dinâmica por Classe */
+        /* Cores de status do modal */
         .lg-modal.success .lg-modal-icon { background: rgba(27, 94, 32, 0.1); color: #4ade80; }
         .lg-modal.error .lg-modal-icon { background: rgba(150, 32, 32, 0.1); color: var(--danger); }
 
         .lg-modal-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
         .lg-modal-text { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; line-height: 1.5; }
 
+        /* --- Utilities --- */
         .lg-row { display: flex; gap: 20px; }
         .lg-col-6 { flex: 1; }
+        .lg-col-3 { width: 25%; }
+        #areaId { display: none; } /* Escondido até o sucesso */
+
     </style>
 </head>
 
@@ -212,18 +216,18 @@
             <div class="lg-modal-icon">
                 <i id="modalIcon" data-lucide="check-circle" style="width: 32px; height: 32px;"></i>
             </div>
-            <h2 class="lg-modal-title" id="modalTitle">Título</h2>
-            <p class="lg-modal-text" id="modalMessage">Mensagem do alerta.</p>
-            
+            <h2 class="lg-modal-title" id="modalTitle">Sucesso!</h2>
+            <p class="lg-modal-text" id="modalMessage">Profissional cadastrado corretamente.</p>
+
             <div class="lg-modal-actions">
-                <button class="lg-btn lg-btn-primary" id="btnFecharModal">Entendido</button>
+                <button class="lg-btn lg-btn-primary" type="button" onclick="fecharModal()">OK</button>
             </div>
         </div>
     </div>
 
     <nav class="lg-sidebar">
-        <a href="/user/list" class="lg-nav-item active"><i data-lucide="calendar-search"></i></a>
-        <a href="/atendimento/list" class="lg-nav-item"><i data-lucide="calendar-search"></i></a>
+        <a href="/user/" class="lg-nav-item"><i data-lucide="layout-grid"></i></a>
+        <a href="/atendimento/list" class="lg-nav-item active"><i data-lucide="calendar-search"></i></a>
         <a href="/professionals/" class="lg-nav-item"><i data-lucide="user"></i></a>
         <div style="flex-grow: 1;"></div>
         <a href="/logout" class="lg-nav-item"><i data-lucide="log-out"></i></a>
@@ -232,45 +236,54 @@
     <main class="lg-main-container">
         <div class="lg-breadcrumb">
             <span>Dashboard</span>
-            <span>Usuários</span>
-            <b>Editar Perfil</b>
+            <span>Profissionais</span>
+            <b>Novo Cadastro</b>
         </div>
 
         <header>
-            <h1 class="lg-display-1">Edição de Usuário</h1>
+            <h1 class="lg-display-1">Cadastro de Profissional</h1>
             <p class="lg-display-2">
-                Atualize as informações de <b><%= usuario.nome %></b>. 
-                Deixe a senha em branco para manter a atual.
+                Preencha os dados abaixo para registrar um novo profissional no sistema.
             </p>
         </header>
 
-        <form class="lg-form" id="formEdicao">
-            <input value="<%= usuario.id %>" type="hidden" id="usuarioId">
+        <form class="lg-form" id="formProfissional">
+            <div class="lg-row" id="areaId">
+                <div class="lg-col-3 lg-form-group">
+                    <label class="lg-label">ID Gerado</label>
+                    <input class="lg-input" type="text" id="profissionalIdDisplay" disabled>
+                </div>
+            </div>
 
             <div class="lg-row">
                 <div class="lg-col-6 lg-form-group">
-                    <label class="lg-label" for="username">Username</label>
-                    <input class="lg-input" value="<%= usuario.nome %>" type="text" id="username" required>
+                    <label class="lg-label" for="username">Nome</label>
+                    <input class="lg-input" type="text" id="username" placeholder="Ex: Ricardo Silva" required>
                 </div>
                 <div class="lg-col-6 lg-form-group">
                     <label class="lg-label" for="email">E-mail</label>
-                    <input class="lg-input" value="<%= usuario.email %>" type="email" id="email" required>
+                    <input class="lg-input" type="email" id="email" placeholder="email@empresa.com" required>
                 </div>
             </div>
 
             <div class="lg-row">
                 <div class="lg-col-6 lg-form-group">
-                    <label class="lg-label" for="senha">Nova Senha (opcional)</label>
-                    <input class="lg-input" type="password" id="senha" placeholder="••••••••">
+                    <label class="lg-label" for="password">Senha</label>
+                    <input class="lg-input" type="password" id="password" placeholder="••••••••" required>
                 </div>
-                <div class="lg-col-6"></div>
+                <div class="lg-col-6 lg-form-group">
+                    <label class="lg-label" for="especialidade">Especialidade</label>
+                    <select class="lg-input" id="especialidade" required>
+                        <option value="Corte de cabelo">Corte de cabelo</option>
+                        <option value="Barba">Barba</option>
+                        <option value="Sobrancelha">Sobrancelha</option>
+                        <option value="Outros">Outros</option>
+                    </select>
+                </div>
             </div>
 
-            <div class="lg-form-footer">
-                <a href="/user/list" class="lg-btn">Cancelar</a>
-                <button class="lg-btn lg-btn-primary" type="submit" id="btnSalvar">
-                    Salvar Alterações
-                </button>
+            <div class="lg-form-actions">
+                <button class="lg-btn lg-btn-primary" type="submit" id="btnSubmit">Finalizar Cadastro</button>
             </div>
         </form>
     </main>
@@ -278,65 +291,70 @@
     <script>
         lucide.createIcons();
 
-        const form = document.getElementById("formEdicao");
-        const modalOverlay = document.getElementById("modalFeedback");
+        const form = document.getElementById("formProfissional");
+        const modal = document.getElementById("modalFeedback");
         const modalContent = document.getElementById("modalContent");
-        const btnFechar = document.getElementById("btnFecharModal");
 
-        let redirectUrl = null;
+        function abrirModal(tipo, titulo, mensagem) {
+            const iconElement = document.getElementById("modalIcon");
 
-        function abrirModal(tipo, titulo, mensagem, redirect = null) {
             modalContent.className = `lg-modal ${tipo}`;
             document.getElementById("modalTitle").innerText = titulo;
             document.getElementById("modalMessage").innerText = mensagem;
-            
-            const iconElement = document.getElementById("modalIcon");
-            iconElement.setAttribute('data-lucide', tipo === 'success' ? 'check-circle' : 'alert-circle');
-            
-            redirectUrl = redirect;
+
+            const iconName = tipo === 'success' ? 'check-circle' : 'alert-circle';
+            iconElement.setAttribute('data-lucide', iconName);
             lucide.createIcons();
-            modalOverlay.classList.add('active');
+
+            modal.classList.add('active');
         }
 
-        btnFechar.addEventListener("click", () => {
-            modalOverlay.classList.remove('active');
-            if (redirectUrl) window.location.href = redirectUrl;
-        });
+        function fecharModal() {
+            modal.classList.remove('active');
+        }
 
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
-            const btnSalvar = document.getElementById("btnSalvar");
-            
-            btnSalvar.disabled = true;
-            btnSalvar.innerText = "Salvando...";
+
+            const btn = document.getElementById("btnSubmit");
+            btn.innerText = "Processando...";
+            btn.disabled = true;
 
             const payload = {
-                id: document.getElementById("usuarioId").value,
                 username: document.getElementById("username").value,
                 email: document.getElementById("email").value,
-                senha: document.getElementById("senha").value
+                password: document.getElementById("password").value,
+                especialidade: document.getElementById("especialidade").value
             };
 
             try {
-                const response = await fetch("/user/edit", {
-                    method: 'PUT',
+                const response = await fetch("/professionals/create", {
+                    method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
+                const data = await response.json();
+
                 if (response.ok) {
-                    abrirModal('success', 'Atualizado!', 'As informações do usuário foram salvas com sucesso.', '/user/list');
+                    abrirModal('success', 'Cadastro Concluído', 'O profissional foi registrado com sucesso no banco de dados.');
+
+                    if(data.profissional && data.profissional.id) {
+                        document.getElementById("areaId").style.display = "flex";
+                        document.getElementById("profissionalIdDisplay").value = `#${data.profissional.id}`;
+                    }
                 } else {
-                    abrirModal('error', 'Erro ao Salvar', 'Não foi possível atualizar os dados. Tente novamente mais tarde.');
-                    btnSalvar.disabled = false;
-                    btnSalvar.innerText = "Salvar Alterações";
+                    abrirModal('error', 'Falha no Cadastro', data.message || 'Ocorreu um erro ao processar os dados.');
                 }
             } catch (err) {
-                abrirModal('error', 'Falha na Rede', 'Verifique sua conexão com a internet.');
-                btnSalvar.disabled = false;
-                btnSalvar.innerText = "Salvar Alterações";
+                abrirModal('error', 'Erro de Conexão', 'Não foi possível comunicar com o servidor.');
+            } finally {
+                btn.innerText = "Finalizar Cadastro";
+                btn.disabled = false;
             }
         });
+
+        window.onclick = (e) => { if (e.target == modal) fecharModal(); }
     </script>
 </body>
 </html>

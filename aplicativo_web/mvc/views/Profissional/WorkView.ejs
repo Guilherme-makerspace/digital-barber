@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGP - WorkView Profissional</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
+
+        :root {
+            --bg-body: #262626;
+            --bg-sidebar: #1f1f1f;
+            --bg-card: #303030;
+            --primary: #686868;
+            --accent: #004ba8;
+            --danger: #962020;
+            --text-main: #ffffff;
+            --text-muted: #a1a0a0;
+            --border-radius: 8px;
+            --font: "Nunito", sans-serif;
+            --sidebar-width: 60px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--bg-body); color: var(--text-main); font-family: var(--font); display: flex; height: 100vh; overflow: hidden; }
+
+        /* --- Sidebar --- */
+        .lg-sidebar { width: var(--sidebar-width); background-color: var(--bg-sidebar); display: flex; flex-direction: column; align-items: center; padding: 20px 0; flex-shrink: 0; }
+        .lg-nav-item { color: var(--text-muted); padding: 12px; margin-bottom: 8px; border-radius: 4px; transition: all 0.2s ease; display: flex; align-items: center; }
+        .lg-nav-item:hover, .lg-nav-item.active { background-color: rgba(255, 255, 255, 0.05); color: var(--text-main); }
+        .lg-nav-item svg { width: 20px; height: 20px; }
+
+        /* --- Main Container --- */
+        .lg-main-container { flex-grow: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; gap: 24px; }
+
+        .lg-breadcrumb { display: flex; gap: 8px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); align-items: center; }
+        .lg-breadcrumb span::after { content: '/'; margin-left: 8px; }
+        .lg-breadcrumb b { color: var(--text-main); }
+
+        .lg-header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .lg-display-1 { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
+
+        .lg-table-wrapper {
+            background-color: var(--bg-sidebar);
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .lg-table { width: 100%; border-collapse: collapse; text-align: left; }
+        .lg-table th {
+            padding: 18px 24px;
+            font-size: 10px;
+            text-transform: uppercase;
+            color: var(--primary);
+            font-weight: 800;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .lg-table td {
+            padding: 16px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            vertical-align: middle;
+        }
+
+        .lg-table tr:last-child td { border-bottom: none; }
+
+        .lg-badge {
+            padding: 4px 10px;
+            border-radius: 100px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="lg-sidebar">
+        <a href="/user/" class="lg-nav-item"><i data-lucide="layout-grid"></i></a>
+        <a href="/atendimento/list" class="lg-nav-item active"><i data-lucide="calendar-search"></i></a>
+        <a href="/professionals/" class="lg-nav-item"><i data-lucide="user"></i></a>
+        <div style="flex-grow: 1;"></div>
+        <a href="/logout" class="lg-nav-item"><i data-lucide="log-out"></i></a>
+    </nav>
+
+    <main class="lg-main-container">
+        <div class="lg-breadcrumb">
+            <span>Sistema</span>
+            <b>WorkView Profissional</b>
+        </div>
+
+        <header class="lg-header-flex">
+            <h1 class="lg-display-1">Agenda do Profissional</h1>
+            <div class="lg-badge">
+                <%= profissional ? profissional.nome : 'Profissional' %>
+            </div>
+        </header>
+
+        <div class="lg-table-wrapper">
+            <table class="lg-table">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Telefone</th>
+                        <th>Data</th>
+                        <th>Horário</th>
+                        <th>Serviço</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(const atendimento of atendimentos) { %>
+                        <tr>
+                            <td><%= atendimento.nomeCliente %></td>
+                            <td><%= atendimento.telefone %></td>
+                            <td><%= atendimento.dataAtendimento %></td>
+                            <td><%= atendimento.horarioAtendimento %></td>
+                            <td><%= atendimento.tipoServico %></td>
+                        </tr>
+                    <% } %>
+                    <% if(!atendimentos || atendimentos.length === 0) { %>
+                        <tr>
+                            <td colspan="5" style="color: var(--text-muted); text-align:center; padding: 28px 24px;">
+                                Nenhum atendimento agendado para este profissional.
+                            </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
