@@ -378,14 +378,24 @@
                 const data = await response.json();
 
                 if (response.ok) {
-                    abrirModal('success', 'Sucesso!', 'O atendimento foi agendado corretamente.');
                     
-                    // Exibe o ID retornado (ajustado para a estrutura do seu backend)
-                    if(data.atendimento && data.atendimento.id) {
-                        document.getElementById("areaId").style.display = "flex";
-                        document.getElementById("atendimentoIdDisplay").value = `#${data.atendimento.id}`;
+                    if(data.atendimento)
+                    {
+                        abrirModal('success', 'Sucesso!', 'O atendimento foi agendado corretamente.');
+                    
+                        // Exibe o ID retornado (ajustado para a estrutura do seu backend)
+                        if(data.atendimento && data.atendimento.id) {
+                            document.getElementById("areaId").style.display = "flex";
+                            document.getElementById("atendimentoIdDisplay").value = `#${data.atendimento.id}`;
+                        }
+                        form.reset(); // Limpa o formulário após sucesso
                     }
-                    form.reset(); // Limpa o formulário após sucesso
+                    else
+                    {
+                        abrirModal('error', 'Erro', 'Conflito de horário.');
+                    }
+
+                    
                 } else {
                     abrirModal('error', 'Erro', data.message || 'Não foi possível salvar o atendimento.');
                 }

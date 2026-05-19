@@ -1,6 +1,8 @@
 const Atendimento = require("../mvc/models/AtendimentoModel");
 const AtendimentoSchema = require("../schemas/AtendimentoSchema");
 const UsuarioSchema = require("../schemas/UsuarioSchema")
+const { Op } = require('sequelize')
+const moment = require('moment');
 
 class AtendimentoService 
 {
@@ -89,6 +91,8 @@ class AtendimentoService
        profissional
     )
     {
+
+
         const atendimento = new Atendimento(
            nomeCliente,
            telefone,
@@ -98,20 +102,102 @@ class AtendimentoService
            tipoServico,
            profissional
         )
-        
-        const a = await this.#atendimentoSchema.create(
-            {
-                nomeCliente: atendimento.nomeCliente,
-                telefone: atendimento.telefone,
-                horarioAtendimento: atendimento.horarioAtendimento,
-                dataAtendimento: atendimento.dataAtendimento,
-                dataNascimento: atendimento.dataNascimento,
-                tipoServico: atendimento.tipoServico,
-                profissional: atendimento.profissional,
-                usuarioId: atendimento.profissional
-            }
-        )
 
+        let a = null;
+
+        let atendimentoIntervalo = null;
+
+        if(tipoServico == "Corte de Cabelo")
+        {   
+            const horario = moment(horarioAtendimento, 'HH:mm').add(40, 'minutes').format('HH:mm');
+
+            const row = await this.#atendimentoSchema.findOne({
+                where: {
+                    tipoServico: 'Corte de Cabelo',
+                    horarioAtendimento: {
+                        [Op.between]: [horarioAtendimento, horario]
+                    }
+                }
+            })
+
+            if(row)
+            {
+                atendimentoIntervalo = row.horarioAtendimento
+            }
+        }
+        else if(tipoServico == "Barba")
+        {
+            const horario = moment(horarioAtendimento, 'HH:mm').add(20, 'minutes').format('HH:mm');
+
+            const row = await this.#atendimentoSchema.findOne({
+                where: {
+                    tipoServico: 'Barba',
+                    horarioAtendimento: {
+                        [Op.between]: [horarioAtendimento, horario]
+                    }
+                }
+            })
+
+            if(row)
+            {
+                atendimentoIntervalo = row.horarioAtendimento
+            }
+        }
+        else if (tipoServico == "Sobrancelha")
+        {
+            const horario = moment(horarioAtendimento, 'HH:mm').add(10, 'minutes').format('HH:mm');
+
+            const row = await this.#atendimentoSchema.findOne({
+                where: {
+                    tipoServico: 'Sobrancelha',
+                    horarioAtendimento: {
+                        [Op.between]: [horarioAtendimento, horario]
+                    }
+                }
+            })
+
+            if(row)
+            {
+                atendimentoIntervalo = row.horarioAtendimento
+            }
+        }
+        else 
+        {
+            const horario = moment(horarioAtendimento, 'HH:mm').add(40, 'minutes').format('HH:mm');
+
+            const row = await this.#atendimentoSchema.findOne({
+                where: {
+                    tipoServico: 'Outros',
+                    horarioAtendimento: {
+                        [Op.between]: [horarioAtendimento, horario]
+                    }
+                }
+            })
+
+            if(row)
+            {
+                atendimentoIntervalo = row.horarioAtendimento
+            }
+        }
+
+        const validaAtendimento = atendimento.validarConflitoHorario(horarioAtendimento, atendimentoIntervalo)
+
+        if(validaAtendimento){
+            a = await this.#atendimentoSchema.create(
+                {
+                    nomeCliente: atendimento.nomeCliente,
+                    telefone: atendimento.telefone,
+                    horarioAtendimento: atendimento.horarioAtendimento,
+                    dataAtendimento: atendimento.dataAtendimento,
+                    dataNascimento: atendimento.dataNascimento,
+                    tipoServico: atendimento.tipoServico,
+                    profissional: atendimento.profissional,
+                    usuarioId: atendimento.profissional
+                }
+            )
+
+        } 
+        
         return a;
 
     }

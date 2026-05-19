@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 class Atendimento
 {
     #id
@@ -100,5 +102,40 @@ class Atendimento
     {
         this.#profissional = valor
     }
+
+    validarConflitoHorario(horarioInformado, horarioPersistido)
+    {
+        let validacao = false
+        let diffData = 0
+
+        if(!horarioPersistido) return !validacao
+
+        if(horarioInformado)
+        {
+            if(horarioInformado == horarioPersistido)
+            {
+                return validacao
+            }
+
+            const inicio = moment(horarioInformado, 'HH:mm');
+            const fim = moment(horarioPersistido, 'HH:mm');
+
+            diffData = fim.diff(inicio, 'minutes') 
+
+
+            switch(this.#tipoServico){
+                case "Corte de Cabelo": if(diffData > 40){validacao = true};
+                    break;
+                case "Barba":if(diffData > 20){validacao = true};
+                    break;
+                case "Sobrancelha":if(diffData > 10){validacao = true};
+                    break;
+                default: if(diffData > 40){validacao = true};
+                    break;
+            }
+        }
+
+    }
+
 }
 module.exports = Atendimento
